@@ -84,6 +84,7 @@ AI_Document-Simplifier/
 ├── .env.example
 ├── .gitignore
 ├── README.md
+├── SETUP_INSTRUCTIONS.md         # fresh-clone setup walkthrough + troubleshooting
 ├── requirements.txt
 ├── start.bat                    # Windows: launch backend + frontend together
 ├── docker-compose.yml

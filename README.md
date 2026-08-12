@@ -2,7 +2,9 @@
 
 Prodapt Hackathon — Group 17. Full design rationale, diagrams, and known
 limitations live in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — read that
-first. This README is just setup/run instructions.
+first. This README is a quick reference; for full step-by-step setup
+(fresh clone → running, with troubleshooting) see
+[SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.md).
 
 ## Prerequisites
 
