@@ -1,6 +1,6 @@
 """
 Vector + keyword indices, one per uploaded document (see
-docs/ARCHITECTURE.md > Tech Stack).
+ARCHITECTURE.md > Tech Stack).
 
 FAISS: IndexFlatIP over L2-normalized vectors (cosine similarity).
 BM25: rank_bm25's BM25Okapi over whitespace-lowercased tokens.
@@ -10,7 +10,7 @@ Both are cached in memory for the running process AND persisted to disk
 longer requires re-uploading documents: get_index() transparently loads a
 document's index from disk into memory the first time it's needed after a
 restart. (This used to be a documented Known Limitation — it isn't
-anymore; see docs/ARCHITECTURE.md.)
+anymore; see ARCHITECTURE.md.)
 """
 
 import pickle

@@ -1,5 +1,5 @@
 """
-Ingestion/indexing pipeline route (see docs/ARCHITECTURE.md > System
+Ingestion/indexing pipeline route (see ARCHITECTURE.md > System
 Architecture > 1. Ingestion / Indexing Pipeline):
 
 Upload PDF/txt -> extract + chunk -> PII redaction -> embed (local model)
@@ -58,7 +58,7 @@ async def upload_document(file: UploadFile = File(...)):
         if not raw_text.strip():
             raise ValueError(
                 "No extractable text found. Scanned/image-only PDFs are not "
-                "supported (no OCR) — see docs/ARCHITECTURE.md > Known Limitations."
+                "supported (no OCR) — see ARCHITECTURE.md > Known Limitations."
             )
 
         chunks = chunking.chunk_text(

@@ -1,5 +1,5 @@
 """
-Streamlit UI (see docs/ARCHITECTURE.md > Step-by-Step Workflow):
+Streamlit UI (see ARCHITECTURE.md > Step-by-Step Workflow):
 
 1. User uploads a PDF/txt document.
 2. Backend processes it (extract, chunk, redact, embed, index, simplify).

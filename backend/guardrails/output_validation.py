@@ -2,7 +2,7 @@
 Output validation: the LLM returns answers with a "citations" field listing
 chunk IDs used; the backend verifies every cited chunk ID was actually part
 of the retrieved context before the answer is shown to the user
-(see docs/ARCHITECTURE.md > Guardrails).
+(see ARCHITECTURE.md > Guardrails).
 """
 
 from typing import List, Tuple

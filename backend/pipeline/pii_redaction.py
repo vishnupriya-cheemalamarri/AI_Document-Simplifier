@@ -1,6 +1,6 @@
 """
 Regex-based PII redaction, applied before any text reaches the LLM or gets
-embedded/indexed (see docs/ARCHITECTURE.md > Guardrails).
+embedded/indexed (see ARCHITECTURE.md > Guardrails).
 
 This is intentionally simple pattern matching, not a full PII-detection
 model — it catches emails, phone numbers, and account/SSN-like numeric

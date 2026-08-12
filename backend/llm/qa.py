@@ -1,5 +1,5 @@
 """
-Grounded Q&A over retrieved chunks (see docs/ARCHITECTURE.md > Guardrails >
+Grounded Q&A over retrieved chunks (see ARCHITECTURE.md > Guardrails >
 Output validation). The LLM must cite the chunk_ids it used; the backend
 (backend/guardrails/output_validation.py) verifies those citations before
 the answer is shown to the user.

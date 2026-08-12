@@ -1,4 +1,4 @@
-"""Shared OpenAI client (gpt-4o-mini, see docs/ARCHITECTURE.md > Tech Stack)."""
+"""Shared OpenAI client (gpt-4o-mini, see ARCHITECTURE.md > Tech Stack)."""
 
 from openai import OpenAI
 

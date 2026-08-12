@@ -1,5 +1,5 @@
 """
-Local embeddings via sentence-transformers (see docs/ARCHITECTURE.md > Tech Stack).
+Local embeddings via sentence-transformers (see ARCHITECTURE.md > Tech Stack).
 
 Model: BAAI/bge-small-en-v1.5, chosen over an API-based embedding model to
 avoid per-request network latency during upload and to remove a dependency

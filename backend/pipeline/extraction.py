@@ -3,7 +3,7 @@ Text extraction from uploaded documents.
 
 PDF extraction uses PyMuPDF (import name `fitz`). No OCR support: a
 scanned/image-only PDF has no text layer, so extraction returns an empty
-string for it (see docs/ARCHITECTURE.md > Known Limitations).
+string for it (see ARCHITECTURE.md > Known Limitations).
 """
 
 import fitz  # PyMuPDF

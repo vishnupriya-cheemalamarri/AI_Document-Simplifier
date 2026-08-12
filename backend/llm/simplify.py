@@ -1,7 +1,7 @@
 """
 Simplification + key-point extraction, batched across multiple chunks per
 LLM call to cut OpenAI call volume on large documents (see
-docs/ARCHITECTURE.md > Tech Stack). Each call handles up to
+ARCHITECTURE.md > Tech Stack). Each call handles up to
 config.SIMPLIFY_BATCH_SIZE chunks at once instead of one call per chunk.
 
 Traced via LangSmith's @traceable decorator. Tracing is a no-op unless

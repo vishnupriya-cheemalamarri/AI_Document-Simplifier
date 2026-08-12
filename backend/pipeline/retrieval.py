@@ -1,6 +1,6 @@
 """
 Hybrid retrieval: BM25 (keyword) + FAISS (dense) combined via reciprocal
-rank fusion (RRF) (see docs/ARCHITECTURE.md > Tech Stack).
+rank fusion (RRF) (see ARCHITECTURE.md > Tech Stack).
 
 Also returns the raw top FAISS cosine-similarity score separately, since
 that (not the fused RRF score) is what the scope guardrail thresholds

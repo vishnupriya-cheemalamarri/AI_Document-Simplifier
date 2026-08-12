@@ -1,7 +1,7 @@
 """
 Central configuration, loaded from environment variables (see .env.example).
 
-Per docs/ARCHITECTURE.md:
+Per ARCHITECTURE.md:
 - Embedding model is loaded once at app startup, not per-request (see main.py).
 - PROMPT_INJECTION_MODEL_NAME's exact HuggingFace model ID should be verified
   before relying on it in a demo.
@@ -40,11 +40,11 @@ RRF_K = int(os.getenv("RRF_K", "60"))
 
 # Number of chunks combined into a single simplify + key-points LLM call, to
 # cut OpenAI call volume on large documents (e.g. 542 chunks / 5 per call =
-# ~109 calls instead of 542). See docs/ARCHITECTURE.md > Tech Stack.
+# ~109 calls instead of 542). See ARCHITECTURE.md > Tech Stack.
 SIMPLIFY_BATCH_SIZE = int(os.getenv("SIMPLIFY_BATCH_SIZE", "5"))
 
 # --- Guardrails ---
-# NOTE: verify this exact model ID against HuggingFace before demo day (see docs/ARCHITECTURE.md).
+# NOTE: verify this exact model ID against HuggingFace before demo day (see ARCHITECTURE.md).
 PROMPT_INJECTION_MODEL_NAME = os.getenv(
     "PROMPT_INJECTION_MODEL_NAME", "protectai/deberta-v3-base-prompt-injection-v2"
 )

@@ -1,5 +1,5 @@
 """
-Query-time pipeline route (see docs/ARCHITECTURE.md > System Architecture >
+Query-time pipeline route (see ARCHITECTURE.md > System Architecture >
 2. Query-Time Pipeline):
 
 User question -> input guardrails (prompt injection, scope check) -> hybrid

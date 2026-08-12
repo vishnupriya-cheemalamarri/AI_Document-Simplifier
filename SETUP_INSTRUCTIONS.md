@@ -2,7 +2,7 @@
 
 Step-by-step instructions for getting this project running from a fresh
 `git clone` — for anyone pulling this repo for the first time. For the
-"why" behind these choices, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+"why" behind these choices, see [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ## Prerequisites
 
@@ -142,7 +142,7 @@ asking it a question.
 - **"No in-memory index for this document" when asking a question** — the
   backend was restarted since that document was uploaded. FAISS/BM25
   indices are in-memory only and don't survive a restart (see
-  [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) > Known Limitations) —
+  [ARCHITECTURE.md](ARCHITECTURE.md) > Known Limitations) —
   just re-upload the document.
 - **Large document uploads take a long time** — simplification + key
   points run at upload time, batched `SIMPLIFY_BATCH_SIZE` (default 5)
@@ -151,6 +151,6 @@ asking it a question.
 
 ## Where to go next
 
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — full architecture, tech
+- [ARCHITECTURE.md](ARCHITECTURE.md) — full architecture, tech
   stack + rationale, data model, mermaid diagrams, known limitations.
 - [README.md](README.md) — short-form quick reference.

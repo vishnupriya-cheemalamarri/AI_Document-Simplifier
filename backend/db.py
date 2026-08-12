@@ -1,5 +1,5 @@
 """
-TinyDB-backed metadata/document store (see docs/ARCHITECTURE.md > Data Model).
+TinyDB-backed metadata/document store (see ARCHITECTURE.md > Data Model).
 
 Four tables:
 - documents:  one record per uploaded document

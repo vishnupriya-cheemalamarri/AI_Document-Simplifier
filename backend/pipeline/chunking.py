@@ -1,5 +1,5 @@
 """
-Semantic sentence-based chunker (see docs/ARCHITECTURE.md > Tech Stack).
+Semantic sentence-based chunker (see ARCHITECTURE.md > Tech Stack).
 
 Not LangChain's SemanticChunker or any other off-the-shelf implementation —
 this is a small custom version, consistent with the rest of this pipeline
@@ -36,7 +36,7 @@ from . import embeddings
 # letter, digit, quote, or opening paren). This is a lightweight regex
 # heuristic, not an NLP sentence tokenizer — it has no extra dependency or
 # model download, but it can mis-split on abbreviations like "Dr." or
-# "e.g." (see docs/ARCHITECTURE.md > Known Limitations).
+# "e.g." (see ARCHITECTURE.md > Known Limitations).
 _SENTENCE_BOUNDARY_RE = re.compile(r'(?<=[.!?])\s+(?=[A-Z0-9"\'(“])')
 
 

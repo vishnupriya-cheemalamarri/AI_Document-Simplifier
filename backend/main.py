@@ -32,7 +32,7 @@ app.include_router(qa.router)
 @app.on_event("startup")
 def on_startup() -> None:
     # Load the embedding model once at startup, not per-request (see
-    # docs/ARCHITECTURE.md > Tech Stack). Also preload the prompt-injection
+    # ARCHITECTURE.md > Tech Stack). Also preload the prompt-injection
     # classifier here so the first user question isn't slowed down by it.
     logger.info("Loading embedding model %s ...", config.EMBEDDING_MODEL_NAME)
     embeddings.load_model()

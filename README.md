@@ -1,7 +1,7 @@
 # AI Document Simplifier
 
 Prodapt Hackathon — Group 17. Full design rationale, diagrams, and known
-limitations live in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — read that
+limitations live in [ARCHITECTURE.md](ARCHITECTURE.md) — read that
 first. This README is a quick reference; for full step-by-step setup
 (fresh clone → running, with troubleshooting) see
 [SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.md).
@@ -70,7 +70,7 @@ PDF or .txt file, and go.
 
 ## Project layout
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the full annotated
+See [ARCHITECTURE.md](ARCHITECTURE.md) for the full annotated
 folder tree, data model, and both pipeline diagrams (ingestion and
 query-time).
 
@@ -79,7 +79,7 @@ query-time).
 The repository also contains a standalone `faiss-service/` Docker
 microservice (a generic FAISS HTTP wrapper with a single shared, persisted
 index). It predates and doesn't match the architecture documented in
-`docs/ARCHITECTURE.md` (one in-memory FAISS index per uploaded document,
+`ARCHITECTURE.md` (one in-memory FAISS index per uploaded document,
 built directly inside the FastAPI backend, not persisted). By design
 decision, the backend does **not** use it — it's left in place but unused.
 See `docker-compose.yml` / `faiss-service/` if you want to run it
@@ -87,6 +87,6 @@ separately; it isn't required for anything above.
 
 ## Known limitations
 
-See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#known-limitations) —
+See [ARCHITECTURE.md](ARCHITECTURE.md#known-limitations) —
 notably: in-memory FAISS indices don't survive a backend restart (you'll
 need to re-upload documents), and there's no OCR support for scanned PDFs.

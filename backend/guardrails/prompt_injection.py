@@ -1,10 +1,10 @@
 """
 Prompt injection detection via a DeBERTa-based text classifier
-(see docs/ARCHITECTURE.md > Guardrails).
+(see ARCHITECTURE.md > Guardrails).
 
 IMPORTANT: config.PROMPT_INJECTION_MODEL_NAME
 (protectai/deberta-v3-base-prompt-injection-v2) is flagged in
-docs/ARCHITECTURE.md as needing verification against HuggingFace before
+ARCHITECTURE.md as needing verification against HuggingFace before
 being relied on for a demo — it has not been confirmed as of this writing.
 
 If the model fails to load (wrong ID, no network, etc.) this module fails
@@ -44,7 +44,7 @@ def load_classifier():
                     logger.warning(
                         "Prompt injection classifier %r failed to load. Failing OPEN: "
                         "injection checks are disabled until this is fixed. Verify the "
-                        "model ID against HuggingFace (see docs/ARCHITECTURE.md).",
+                        "model ID against HuggingFace (see ARCHITECTURE.md).",
                         config.PROMPT_INJECTION_MODEL_NAME,
                         exc_info=True,
                     )
