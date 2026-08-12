@@ -1,0 +1,22 @@
+services:
+  faiss-db:
+    build: ./faiss-service
+    container_name: faiss-db
+    ports:
+      - "8000:8000"
+    volumes:
+      - faiss_data:/data
+    environment:
+      - FAISS_INDEX_PATH=/data/index.faiss
+      - FAISS_METADATA_PATH=/data/metadata.pkl
+      - METRIC=ip # "ip" = cosine similarity (service auto-normalizes vectors), or "l2" for Euclidean distance
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+volumes:
+  faiss_data:

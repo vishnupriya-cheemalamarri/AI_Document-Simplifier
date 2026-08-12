@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# Env
+.env
+
+# Runtime data (keep the folders themselves, ignore their contents)
+backend/uploaded_docs/*
+!backend/uploaded_docs/.gitkeep
+backend/db/*
+!backend/db/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db

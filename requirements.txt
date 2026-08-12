@@ -1,0 +1,39 @@
+# --- Backend: FastAPI ---
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+python-multipart==0.0.9
+pydantic==2.9.2
+python-dotenv==1.0.1
+
+# --- PDF extraction ---
+pymupdf==1.24.10
+
+# --- Embeddings + vector/keyword search ---
+sentence-transformers==3.1.1
+faiss-cpu==1.8.0.post1
+rank-bm25==0.2.2
+numpy==1.26.4
+
+# --- Metadata/document store ---
+tinydb==4.8.0
+
+# --- LLM + observability ---
+openai==1.51.0
+langsmith==0.1.129
+# Pinned: openai==1.51.0 passes a `proxies` kwarg to httpx.Client() that
+# httpx>=0.28 removed. Without this pin, an unconstrained resolver installs
+# httpx 0.28.x and every OpenAI call fails with "Client.__init__() got an
+# unexpected keyword argument 'proxies'". Keep this pin unless/until openai
+# is upgraded past the break.
+httpx==0.27.2
+
+# --- Guardrails: prompt injection classifier ---
+# NOTE: transformers/torch are large downloads (~2GB+). If you're on a
+# CPU-only machine, consider installing torch first from
+# https://download.pytorch.org/whl/cpu to avoid pulling CUDA wheels.
+transformers==4.44.2
+torch==2.4.1
+
+# --- Frontend: Streamlit ---
+streamlit==1.38.0
+requests==2.32.3
