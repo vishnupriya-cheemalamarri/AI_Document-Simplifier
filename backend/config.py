@@ -20,13 +20,16 @@ BASE_DIR = Path(__file__).resolve().parent
 UPLOAD_DIR = Path(os.getenv("UPLOAD_DIR", BASE_DIR / "uploaded_docs"))
 DB_DIR = Path(os.getenv("DB_DIR", BASE_DIR / "db"))
 DB_PATH = DB_DIR / "db.json"
+FAISS_INDEX_DIR = Path(os.getenv("FAISS_INDEX_DIR", BASE_DIR / "faiss_indices"))
 
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 DB_DIR.mkdir(parents=True, exist_ok=True)
+FAISS_INDEX_DIR.mkdir(parents=True, exist_ok=True)
 
-# --- Chunking: word-based, 150 words/chunk, 30 words overlap (20%) ---
-CHUNK_SIZE_WORDS = int(os.getenv("CHUNK_SIZE_WORDS", "150"))
-CHUNK_OVERLAP_WORDS = int(os.getenv("CHUNK_OVERLAP_WORDS", "30"))
+# --- Chunking: semantic, bounded to 10-20 sentences/chunk, 2-sentence overlap ---
+CHUNK_MIN_SENTENCES = int(os.getenv("CHUNK_MIN_SENTENCES", "10"))
+CHUNK_MAX_SENTENCES = int(os.getenv("CHUNK_MAX_SENTENCES", "20"))
+CHUNK_OVERLAP_SENTENCES = int(os.getenv("CHUNK_OVERLAP_SENTENCES", "2"))
 
 # --- Embeddings: local, sentence-transformers, BAAI/bge-small-en-v1.5 ---
 EMBEDDING_MODEL_NAME = os.getenv("EMBEDDING_MODEL_NAME", "BAAI/bge-small-en-v1.5")

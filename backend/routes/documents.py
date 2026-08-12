@@ -61,7 +61,9 @@ async def upload_document(file: UploadFile = File(...)):
                 "supported (no OCR) — see docs/ARCHITECTURE.md > Known Limitations."
             )
 
-        chunks = chunking.chunk_text(raw_text, config.CHUNK_SIZE_WORDS, config.CHUNK_OVERLAP_WORDS)
+        chunks = chunking.chunk_text(
+            raw_text, config.CHUNK_MIN_SENTENCES, config.CHUNK_MAX_SENTENCES, config.CHUNK_OVERLAP_SENTENCES
+        )
         if not chunks:
             raise ValueError("Document produced no chunks.")
 
@@ -77,8 +79,8 @@ async def upload_document(file: UploadFile = File(...)):
                     "doc_id": doc_id,
                     "chunk_index": c["index"],
                     "text": redacted_text,
-                    "word_start": c["word_start"],
-                    "word_end": c["word_end"],
+                    "sentence_start": c["sentence_start"],
+                    "sentence_end": c["sentence_end"],
                     "pii_redacted": was_redacted,
                 }
             )

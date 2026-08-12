@@ -13,6 +13,8 @@ backend/uploaded_docs/*
 !backend/uploaded_docs/.gitkeep
 backend/db/*
 !backend/db/.gitkeep
+backend/faiss_indices/*
+!backend/faiss_indices/.gitkeep
 
 # OS
 .DS_Store

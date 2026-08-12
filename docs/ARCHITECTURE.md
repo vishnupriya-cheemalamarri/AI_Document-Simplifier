@@ -13,9 +13,9 @@ Build an AI tool that simplifies complex documents (policies, reports, manuals, 
 | Backend | FastAPI (Python) | Async-friendly, fast to stand up, clean REST layer |
 | Frontend | Streamlit | Fastest path to a working UI for a time-boxed hackathon build |
 | PDF extraction | PyMuPDF (import name `fitz`) | — |
-| Chunking | Custom word-based chunker — 150 words per chunk, 30 words overlap (20%) | — |
+| Chunking | Custom **semantic** sentence-based chunker — not LangChain's `SemanticChunker` or any off-the-shelf implementation, hand-rolled like the rest of this pipeline. Sentences (via a lightweight regex splitter, not an NLP tokenizer) are embedded with the same local embedding model used for retrieval; each chunk is bounded to `CHUNK_MIN_SENTENCES`–`CHUNK_MAX_SENTENCES` (default 10–20) sentences, but the exact cut point within that band is placed at the lowest consecutive-sentence similarity (the most likely real topic shift), 2-sentence overlap (`CHUNK_OVERLAP_SENTENCES`). | Chunk boundaries land on actual topic shifts rather than a fixed sentence/word count, while the min/max band avoids the pathologically tiny/huge chunks an unbounded semantic splitter can produce on very uniform or very choppy text |
 | Embeddings | Local, via `sentence-transformers`, model `BAAI/bge-small-en-v1.5`. Loaded once at app startup, not per-request. | Chosen over an API-based embedding model (e.g. OpenAI) specifically to avoid per-request network latency during upload and to remove a dependency on venue wifi during the live demo |
-| Vector search | FAISS (`IndexFlatIP`, cosine similarity via normalized vectors), one index per uploaded document | — |
+| Vector search | FAISS (`IndexFlatIP`, cosine similarity via normalized vectors), one index per uploaded document. Persisted to disk (`backend/faiss_indices/{doc_id}.faiss` + a `.meta.pkl` sidecar holding the paired BM25 index, chunk_ids, and chunk_texts) and lazily reloaded into memory on first access after a restart — no re-upload needed. | — |
 | Keyword search | BM25 (`rank_bm25` library), combined with FAISS via reciprocal rank fusion (RRF) for hybrid retrieval | — |
 | Metadata / document store | TinyDB (embedded NoSQL, JSON-file-backed) | Chosen over MongoDB to avoid a server/Docker dependency in a 3.5-hour build |
 | Raw file storage | Local folder (`backend/uploaded_docs/`) | Prototype-appropriate; **not** intended as the production storage design |
@@ -37,10 +37,10 @@ Two separate flows: an ingestion/indexing pipeline that runs once per uploaded d
 
 ```mermaid
 flowchart LR
-    A[Upload PDF] --> B["Extract + chunk<br/>(PyMuPDF / fitz;<br/>150 words/chunk, 30 words overlap)"]
+    A[Upload PDF] --> B["Extract + chunk<br/>(PyMuPDF / fitz; semantic split,<br/>10-20 sentences/chunk, 2-sentence overlap)"]
     B --> C["PII redaction<br/>(regex: emails, phones,<br/>account/SSN-like patterns)"]
     C --> D["Embed<br/>(local model: sentence-transformers<br/>BAAI/bge-small-en-v1.5)"]
-    D --> E["Index<br/>(FAISS IndexFlatIP + BM25)"]
+    D --> E["Index<br/>(FAISS IndexFlatIP + BM25,<br/>persisted to disk)"]
     D --> F["Store metadata<br/>(TinyDB)"]
     E --> G["Simplify + key points<br/>(gpt-4o-mini, batched<br/>SIMPLIFY_BATCH_SIZE chunks/call)"]
     F --> G
@@ -67,7 +67,7 @@ The metadata/document store is TinyDB (`backend/db.py`), organized into four tab
 - **`documents`** — one record per uploaded document (created during ingestion):
   `doc_id`, `filename`, `content_type` (`"pdf"` | `"txt"`), `upload_time`, `file_path`, `num_chunks`, `word_count`, `status` (`"processing"` | `"ready"` | `"failed"`), `error`.
 - **`chunks`** — one record per text chunk produced by the chunker, post-PII-redaction (created during ingestion; referenced by ID from citations at query time):
-  `chunk_id` (`"{doc_id}::{chunk_index}"`), `doc_id`, `chunk_index`, `text` (redacted), `word_start`, `word_end`, `pii_redacted` (bool).
+  `chunk_id` (`"{doc_id}::{chunk_index}"`), `doc_id`, `chunk_index`, `text` (redacted), `sentence_start`, `sentence_end`, `pii_redacted` (bool).
 - **`key_points`** — simplified text + extracted key points, one record per chunk/"section" (created by the LLM simplify step):
   `id`, `doc_id`, `chunk_id`, `chunk_index`, `simplified_text`, `key_points` (list of strings).
 - **`qa_history`** — one record per user question asked in the chat box (created by the query-time pipeline):
@@ -103,6 +103,7 @@ AI_Document-Simplifier/
 │   ├── db.py                    # TinyDB tables
 │   ├── uploaded_docs/           # raw file storage (gitignored contents)
 │   ├── db/                      # TinyDB json file (gitignored contents)
+│   ├── faiss_indices/           # persisted FAISS + BM25 indices, one pair per doc_id (gitignored contents)
 │   ├── pipeline/
 │   │   ├── extraction.py        # PyMuPDF text extraction
 │   │   ├── chunking.py          # word-based chunker
@@ -149,7 +150,9 @@ Phased, not tied to fixed clock times — the actual team schedule lives elsewhe
 
 ## Known Limitations
 
-- In-memory FAISS indices are not persisted across server restarts; TinyDB metadata is, but a restart requires re-uploading documents to rebuild vector indices.
 - Local folder storage and TinyDB are prototype-appropriate, not production storage choices.
+- If a document's `backend/faiss_indices/{doc_id}.*` files are deleted or corrupted while its TinyDB record still says `status: "ready"`, asking a question about it will fail with a clear "no index found" error rather than silently breaking — re-uploading the document is the fix.
 - No OCR support — scanned/image-only PDFs will return empty extracted text.
+- Sentence splitting for chunking uses a lightweight regex heuristic, not an NLP sentence tokenizer — it can mis-split on abbreviations (e.g. "Dr.", "e.g."), occasionally shifting a chunk boundary earlier or later than a true sentence break. It doesn't corrupt chunk text, just makes boundaries imperfect in edge cases.
+- Semantic chunking embeds every sentence once (locally) purely to pick chunk boundaries — this is extra local computation beyond the per-chunk embedding used for indexing, though still no OpenAI cost/latency since it's the same local model. Those boundary-detection embeddings run on raw, pre-PII-redaction sentence text; this is fine only because that model is 100% local (nothing leaves the process) — redaction still happens per-chunk before anything is indexed, displayed, or sent to the LLM.
 - Prompt injection classifier model ID should be verified before demo day.

@@ -41,9 +41,9 @@ def ask_question(doc_id: str, req: AskRequest):
     if not indexing.has_index(doc_id):
         raise HTTPException(
             409,
-            "No in-memory index for this document — the server likely restarted. "
-            "Re-upload the document to rebuild its index (see docs/ARCHITECTURE.md "
-            "> Known Limitations).",
+            "No index found for this document, in memory or on disk. It may not "
+            "have finished processing, or its stored index files were removed — "
+            "re-upload the document to rebuild it.",
         )
 
     question = req.question.strip()
